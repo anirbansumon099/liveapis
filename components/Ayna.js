@@ -67,5 +67,5 @@ async function makeAuthPostRequest(params:"",postData = null) {
 
 // ✅ ফাংশন এক্সপোর্ট করা যাতে অন্য ফাইলে ব্যবহার করা যায়
 module.exports = {
-    makeAuthPostRequest
+    makeAuthPostRequest_2
 };
