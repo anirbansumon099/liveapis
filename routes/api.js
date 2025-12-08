@@ -27,7 +27,7 @@ router.get("/ayna",async(req,res)=>{
     const id = req.query.id;
     try {
         const postData = {  };
-        const result = await makeAuthPostRequest_2("",postData);
+        const result = await makeAuthPostRequest_2(id,postData);
 
         if (result.success) {
             res.json({
