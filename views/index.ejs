@@ -1,10 +1,464 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
-  <title><%= title %></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamPro API - পেশাদার ব্লক ডিজাইন</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* অ্যাকসেন্ট কালার ভ্যারিয়েবল */
+        :root {
+            --primary-color: #3f51b5; /* নাবিক নীল (Indigo) */
+            --accent-color: #4CAF50; /* সবুজ */
+            --background-color: #f4f6f8; /* হালকা ধূসর ব্যাকগ্রাউন্ড */
+            --text-color: #495057; /* ডার্ক ধূসর টেক্সট */
+            --dark-text: #212529;
+            --card-bg: #ffffff;
+        }
+
+        /* ======================================= */
+        /* === ১. গ্লোবাল এবং বেস স্টাইল === */
+        /* ======================================= */
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--background-color); 
+            color: var(--text-color); 
+            line-height: 1.6; 
+            scroll-behavior: smooth;
+        }
+        .container { 
+            width: 90%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+
+        /* বাটন স্টাইল */
+        .btn { 
+            display: inline-block; 
+            padding: 12px 24px; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: background-color 0.3s, transform 0.2s; 
+            text-align: center; 
+            cursor: pointer;
+        }
+        .btn-primary { background-color: var(--primary-color); color: white; border: 1px solid var(--primary-color); } 
+        .btn-primary:hover { background-color: #303f9f; }
+        
+        .btn-cta { background-color: var(--accent-color); color: white; border: none; font-size: 1.2em; padding: 16px 40px; border-radius: 8px; } 
+        .btn-cta:hover { background-color: #388E3C; }
+        
+        .btn-docs { background-color: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); margin-left: 15px; border-radius: 8px;}
+        .btn-docs:hover { background-color: var(--primary-color); color: white; }
+        .btn-login { background: transparent; color: var(--dark-text); border: none; }
+        .btn-login:hover { color: var(--primary-color); }
+
+        /* ======================================= */
+        /* === ২. স্প্ল্যাশ স্ক্রিন === */
+        /* ======================================= */
+
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: var(--primary-color); color: white; 
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 9999; opacity: 1; transition: opacity 0.5s ease-out; 
+        }
+        .splash-content h1 { font-size: 3.5em; font-weight: 900; }
+        .loader { border: 6px solid rgba(255, 255, 255, 0.3); border-top: 6px solid #ffffff; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #main-content { display: none; }
+
+
+        /* ======================================= */
+        /* === ৩. নেভিগেশন ও হিরো স্টাইল === */
+        /* ======================================= */
+
+        /* নেভিগেশন বার */
+        .navbar { background-color: var(--card-bg); padding: 15px 0; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo a { font-size: 1.8em; font-weight: 900; color: var(--primary-color); text-decoration: none; } 
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; }
+        .nav-links li { margin-left: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+
+        /* হিরো সেকশন */
+        .hero-section { 
+            background: var(--card-bg); 
+            padding: 120px 0; 
+            text-align: center; 
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .hero-section h1 { font-size: 3.8em; font-weight: 900; color: var(--dark-text); margin-top: 10px; }
+        .tagline { font-weight: 600; color: var(--accent-color); font-size: 1.1em; } 
+        .subtitle { font-size: 1.3em; color: var(--text-color); max-width: 800px; margin: 0 auto 50px auto; }
+        
+        /* ======================================= */
+        /* === ৪. প্রোডাক্ট ও কার্ড স্টাইল === */
+        /* ======================================= */
+
+        .products-section { padding: 80px 0; background-color: var(--background-color); text-align: center; }
+        .products-section h2 { font-size: 2.8em; margin-bottom: 20px; color: var(--dark-text); font-weight: 900; }
+        .section-subtitle { font-size: 1.2em; color: var(--text-color); margin-bottom: 50px; }
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 30px; 
+            text-align: left; /* কার্ডের ভেতরের লেখা বাম দিকে থাকবে */
+        }
+
+        .product-card { 
+            background-color: var(--card-bg); 
+            padding: 35px; 
+            border-radius: 10px; 
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s, box-shadow 0.3s; 
+        }
+        .product-card:hover { border-color: var(--primary-color); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+        
+        .product-icon { 
+            font-size: 2.2em; 
+            margin-bottom: 15px; 
+            color: var(--primary-color);
+        }
+        .product-card h3 { color: var(--dark-text); font-size: 1.6em; margin-top: 0; margin-bottom: 10px; }
+        .product-card p { color: var(--text-color); font-size: 0.95em; min-height: 50px; }
+        
+        .product-details-btn { 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+        .product-details-btn:hover { background-color: #303f9f; }
+
+        /* ফুটার */
+        .footer { background-color: var(--dark-text); color: #b0b0b0; padding: 40px 0; text-align: left; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .footer h4 { color: white; font-size: 1.2em; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 5px;}
+        .footer ul { list-style: none; padding: 0; }
+        .footer ul li a { color: #b0b0b0; text-decoration: none; display: block; margin-bottom: 8px; font-size: 0.95em; }
+        .footer ul li a:hover { color: var(--primary-color); }
+        .copyright { text-align: center; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; font-size: 0.85em;}
+
+        /* ======================================= */
+        /* === ৫. মোডাল স্টাইল === */
+        /* ======================================= */
+        
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.6); }
+        .modal-content { background-color: var(--card-bg); color: var(--dark-text); margin: 8% auto; padding: 35px; border-radius: 12px; width: 80%; max-width: 700px; box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3); position: relative; }
+
+        .close-btn { color: #aaa; float: right; font-size: 32px; font-weight: bold; }
+        .close-btn:hover { color: var(--primary-color); }
+
+        #modal-details h3 { color: var(--primary-color); font-size: 2.2em; margin-top: 5px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+        #modal-details p { color: var(--text-color); }
+        #modal-details ul { list-style-type: none; padding: 0; margin-top: 20px; }
+        #modal-details ul li {
+            background: #f0f0f0;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent-color); /* সবুজ হাইলাইট */
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        /* ======================================= */
+        /* === ৬. রেসপনসিভ ডিজাইন (মিডিয়া কোয়েরি) === */
+        /* ======================================= */
+
+        /* ট্যাবলেট এবং ছোট ল্যাপটপ (Max 1024px) */
+        @media (max-width: 1024px) {
+            .hero-section h1 { font-size: 3em; }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            }
+        }
+
+        /* মোবাইল এবং ছোট ট্যাবলেট (Max 767px) */
+        @media (max-width: 767px) {
+            .navbar .container {
+                flex-direction: column; 
+            }
+            .nav-links {
+                display: none; /* মোবাইলে নেভিগেশন লিংক লুকানো */
+            }
+            .auth-buttons {
+                margin-top: 15px;
+                display: flex;
+                width: 100%;
+                justify-content: center;
+            }
+            .btn-login { margin-right: 10px; }
+
+            .hero-section { padding: 80px 0; }
+            .hero-section h1 { font-size: 2.5em; }
+            .hero-actions {
+                display: flex;
+                flex-direction: column; 
+                align-items: center;
+            }
+            .btn-cta, .btn-docs {
+                width: 80%;
+                margin: 10px 0;
+            }
+            .product-grid {
+                grid-template-columns: 1fr; /* মোবাইলে সিঙ্গেল কলাম */
+            }
+            .products-section h2 { font-size: 2.2em; }
+            .footer-grid {
+                grid-template-columns: 1fr; /* ফুটার কলামগুলো স্ট্যাক হবে */
+                text-align: center;
+            }
+            .footer h4 { border-bottom: none; }
+            .footer ul { text-align: center; }
+
+            .modal-content {
+                margin: 5% auto;
+                width: 95%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1><%= title %></h1>
-  <a href="/users">Users Page</a>
+
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="loader"></div>
+            <h1>StreamarPro Api </h1>
+            <p>পেশাদার সলিউশন লোড হচ্ছে...</p>
+        </div>
+    </div>
+    
+    <div id="main-content">
+        
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="#"> StreamarPro Api</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#products">প্রোডাক্ট</a></li>
+                    <li><a href="#">প্রাইসিং</a></li>
+                    <li><a href="#">ডকুমেন্টেশন</a></li>
+                    <li><a href="#">ব্লগ</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="#" class="btn btn-login">লগইন</a>
+                    <a href="#" class="btn btn-primary">নিবন্ধন করুন</a>
+                </div>
+            </div>
+        </nav>
+
+        <header class="hero-section">
+            <div class="container">
+                <p class="tagline">লাইভ স্ট্রিমিং এবং এনগেজমেন্ট API</p>
+               
+                <p class="subtitle">আমাদের স্কেলেবল এবং কম-লেটেন্সি API ব্যবহার করে আপনার ভিডিও স্ট্রিমিং, শক্তিশালী করুন।</p>
+                <div class="hero-actions">
+                    <a href="#" class="btn btn-cta">বিনামূল্যে শুরু করুন</a>
+                    <a href="#" class="btn btn-docs">API ডকুমেন্টেশন</a>
+                </div>
+            </div>
+        </header>
+
+        <section id="products" class="products-section">
+            <div class="container">
+                <h2>মূল API সার্ভিসসমূহ</h2>
+                <p class="section-subtitle">আপনার ব্যবসার জন্য বিশেষভাবে তৈরি আমাদের সেরা প্রোডাক্টগুলি দেখুন।</p>
+                
+                <div class="product-grid">
+
+                    <div class="product-card" data-product-id="roarzone" data-name="RoarZone Live Score API">
+                        <div class="product-icon"><img  src="https://roarzone.info/wp-content/uploads/2024/02/logo.png" width="100"></div>
+                        <h3>RoarZone Live API</h3>
+                        
+                        <button class="product-details-btn" onclick="showDetails('roarzone')">আরও জানুন</button>
+                    </div>
+
+                    <div class="product-card" data-product-id="streamerpro" data-name="StreamerPro Channel Management">
+                        <div class="product-icon"><img src="https://aynaott.com/assets/images/logo/logo-2.png" width="100"> </div>
+                        <h3>Ayna Ott</h3>
+                   
+                        <button class="product-details-btn" onclick="showDetails('streamerpro')">আরও জানুন</button>
+                    </div>
+<!---
+                    <div class="product-card" data-product-id="aynaott" data-name="AynaOTT Content Recommendation">
+                        <div class="product-icon">💡</div>
+                        <h3>AynaOTT Content Recommendation</h3>
+                        <p>ইউজার পছন্দ এবং দেখার ইতিহাসের ভিত্তিতে পরবর্তী মুভি বা শো সাজেস্ট করার জন্য এআই-ভিত্তিক অ্যালগরিদম।</p>
+                        <button class="product-details-btn" onclick="showDetails('aynaott')">আরও জানুন</button>
+                    </div>
+
+                    <div class="product-card" data-product-id="basnetwork" data-name="BASNetwork Billing & Auth">
+                        <div class="product-icon">🔐</div>
+                        <h3>BASNetwork Billing & Auth</h3>
+                        <p>সাবস্ক্রিপশন, ইনভয়েস জেনারেশন এবং পেইড ইউজারদের নিরাপদ অথেনটিকেশন দ্রুত সম্পন্ন করুন।</p>
+                        <button class="product-details-btn" onclick="showDetails('basnetwork')">আরও জানুন</button>
+                    </div>
+--->
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <h4>API Hub</h4>
+                        <p>পরবর্তী প্রজন্মের ডেটা সলিউশন API।</p>
+                    </div>
+                    <div>
+                        <h4>প্রোডাক্ট</h4>
+                        <ul>
+                            <li><a href="#">RoarZone API</a></li>
+                            <li><a href="#">StreamerPro</a></li>
+                            <li><a href="#">AynaOTT</a></li>
+                            <li><a href="#">প্রাইসিং</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>কোম্পানি</h4>
+                        <ul>
+                            <li><a href="#">আমাদের সম্পর্কে</a></li>
+                            <li><a href="#">ক্যারিয়ার</a></li>
+                            <li><a href="#">যোগাযোগ</a></li>
+                            <li><a href="#">শর্তাবলী</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>রিসোর্স</h4>
+                        <ul>
+                            <li><a href="#">ডকুমেন্টেশন</a></li>
+                            <li><a href="#">API স্ট্যাটাস</a></li>
+                            <li><a href="#">ব্লগ</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>© 2025 StreamPro Api. সকল অধিকার সংরক্ষিত।</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modal-details">
+                </div>
+        </div>
+    </div>
+    
+    <script>
+        // প্রোডাক্টের বিস্তারিত তথ্য একটি JS অবজেক্টে সংরক্ষণ (আগের মতোই)
+        const apiProducts = {
+            roarzone: {
+                features: [
+                    "রিয়েল-টাইম স্কোর আপডেট (50ms ল্যাটেন্সি)",
+                    "প্লেয়ার এবং টিমের পরিসংখ্যান API",
+                    "লাইভ স্ট্রিমিং চ্যাট ইন্টিগ্রেশন",
+                    "ই-স্পোর্টস ইভেন্টের ক্যালেন্ডার ডেটা"
+                ],
+                description: "RoarZone API  Live tv প্ল্যাটফর্মগুলির জন্য ডেটা ফিড সরবরাহ করে। আপনার লাইভ স্পোর্টস কভারেজকে সমৃদ্ধ করে"
+            },
+            streamerpro: {
+                features: [
+                    "চ্যানেল স্ট্যাটাস (লাইভ/অফলাইন) মনিটরিং",
+                    "ভিউয়ার জিও-লোকেশন অ্যানালিটিক্স",
+                    "ভিডিও ট্রান্সকোডিং ও এনকোডিং নিয়ন্ত্রণ",
+                    "সাবস্ক্রাইবার ও ফলোয়ার ট্র্যাকিং"
+                ],
+                description: "StreamerPro API আপনাকে আপনার লাইভ স্ট্রিমগুলির উপর সম্পূর্ণ নিয়ন্ত্রণ এবং গভীর অন্তর্দৃষ্টি দেয়, পারফরম্যান্স অপ্টিমাইজ করার জন্য।"
+            },
+            aynaott: {
+                features: [
+                    "কন্টেন্ট সার্চ এবং ফিল্টারিং এন্ডপয়েন্ট",
+                    "মাল্টি-অ্যাকাউন্ট ম্যানেজমেন্ট",
+                    "DRM (Digital Rights Management) ইন্টিগ্রেশন স্ট্যাটাস",
+                    "ইউজার রেটিং এবং রিভিউ ডেটা"
+                ],
+                description: "AynaOTT API বৃহৎ ক্যাটালগ এবং ইউজার বেস সহ OTT প্ল্যাটফর্মের জন্য তৈরি, কন্টেন্ট ডেলিভারি সহজ করে।"
+            },
+            basnetwork: {
+                features: [
+                    "সাবস্ক্রিপশন প্ল্যান তৈরি এবং ম্যানেজমেন্ট",
+                    "ইনভয়েস এবং বিলিং ডেটা রিকনসিলিয়েশন",
+                    "পেইড ইউজার অথেনটিকেশন ভেরিফিকেশন",
+                    "রিফান্ড এবং ডিসকাউন্ট কুপন API"
+                ],
+                description: "BASNetwork API আপনার স্ট্রিমিং পরিষেবার জন্য একটি নিরাপদ এবং স্কেলেবল পেমেন্ট সলিউশন যা গ্রাহকদের বিলিং পরিচালনা করে।"
+            }
+        };
+
+        const modal = document.getElementById('productModal');
+        const modalDetails = document.getElementById('modal-details');
+
+        // ১. স্প্ল্যাশ স্ক্রিন লজিক
+        document.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500); 
+            }, 1000); 
+        });
+
+
+        // ২. মোডাল দেখানোর ফাংশন
+        function showDetails(productId) {
+            const product = apiProducts[productId];
+            const productName = document.querySelector(`.product-card[data-product-id="${productId}"]`).getAttribute('data-name');
+            
+            let htmlContent = `
+                <h3 id="modal-title">${productName}</h3>
+                <p>${product.description}</p>
+                <h4>🚀 মূল ফিচারসমূহ:</h4>
+                <ul>
+            `;
+            
+            product.features.forEach(feature => {
+                htmlContent += `<li>${feature}</li>`;
+            });
+            
+            htmlContent += `</ul><a href="#" class="btn btn-primary" style="margin-top:20px;">এই API ব্যবহার শুরু করুন</a>`;
+            
+            modalDetails.innerHTML = htmlContent;
+            modal.style.display = 'block';
+        }
+
+        // ৩. মোডাল লুকানোর ফাংশন
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // ৪. মোডালের বাইরে ক্লিক করলে লুকানোর লজিক
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>
