@@ -27,10 +27,13 @@ router.get("/token", async (req, res) => {
         const result = await makeAuthPostRequest(postData);
 
         if (result.success) {
-            console.log("✅ Server Response:", result.data);
-            res.send(result.data);
+            res.json({
+                token: result.data
+            })
+           , // res.send(result.data);
         } else {
             console.error("❌ Error:", result.error);
+            
             res.status(500).send(result.error);
         }
     } catch (err) {
