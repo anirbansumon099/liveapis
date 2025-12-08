@@ -11,11 +11,12 @@ router.use(auth);
 router.get("/users", (req, res) => {
   res.json({
     success: true,
-    user
+    users
+  });
 });
 
 // POST /api/users
-router.post("/roarzone", (req, res) => {
+router.post("/users", (req, res) => {
   const { name } = req.body;
 
   if (!name) {
