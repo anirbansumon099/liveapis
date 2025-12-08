@@ -14,10 +14,11 @@ module.exports = function (req, res, next) {
     }
 
     if (apiKey !== VALID_API_KEY || clientId !== VALID_CLIENT_ID) {
-        return res.status(401).json({
+        return res.status(503);
+        /*json({
             success: false,
             message: "Invalid authentication headers"
-        });
+        });*/
     }
 
     // সব ঠিক থাকলে → API চলবে
