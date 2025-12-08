@@ -8,7 +8,7 @@ const { URL } = require('url');
 const CLIENT_CONFIG = {
     USERNAME: 'admin',
     PASSWORD: 'admin123',
-    BASE_URL: 'http://tv.roarzone.info/app.php',
+    BASE_URL: 'https://ayna.linkchur.top/apis',
     USER_AGENT: 'Rangdhanu Live 1.0'
 };
 
