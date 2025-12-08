@@ -26,7 +26,7 @@ router.get("/users", (req, res) => {
 router.get("/ayna",async(req,res)=>{
     try {
         const postData = {  };
-        const result = await makeAuthPostRequest_ayna(postData);
+        const result = await makeAuthPostRequest_2("",postData);
 
         if (result.success) {
             res.json({
