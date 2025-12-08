@@ -4,8 +4,8 @@ module.exports = function (req, res, next) {
     const clientOrigin = req.headers['Origin'];
 
     // তোমার আসল secret
-    const VALID_API_KEY = "1234567890"; 
-    const VALID_CLIENT_ID = "myapp";
+    const VALID_API_KEY = "fuck_your_system"; 
+    const VALID_CLIENT_ID = "streamarpro";
 
     if (!apiKey || !clientId) {
         return res.status(503);
