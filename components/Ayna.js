@@ -19,11 +19,11 @@ const CLIENT_CONFIG = {
  * @returns {Promise<Object>} সফল হলে { success: true, data: <response_data> }
  * ব্যর্থ হলে { success: false, error: <error_details> }
  */
-async function makeAuthPostRequest_2(params:"",postData = null) {
+async function makeAuthPostRequest_2(params,postData = null) {
     const { USERNAME, PASSWORD, BASE_URL, USER_AGENT } = CLIENT_CONFIG;
 
     // URL-এ Basic Auth যোগ করা
-    const urlWithAuth = new URL(BASE_URL);
+    const urlWithAuth = new URL(BASE_URL+params);
     urlWithAuth.username = USERNAME;
     urlWithAuth.password = PASSWORD;
 
