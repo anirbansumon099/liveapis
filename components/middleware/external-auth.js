@@ -7,10 +7,11 @@ module.exports = function (req, res, next) {
     const VALID_CLIENT_ID = "myapp";
 
     if (!apiKey || !clientId) {
-        return res.status(401).json({
+        return res.status(503);
+        /*json({
             success: false,
             message: "Missing required headers"
-        });
+        });*/
     }
 
     if (apiKey !== VALID_API_KEY || clientId !== VALID_CLIENT_ID) {
