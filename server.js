@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 // Set EJS template folder
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use("/", require("./routes/web"));
