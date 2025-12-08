@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>User List</h1>
+
+  <ul>
+    <% users.forEach(u => { %>
+      <li><%= u.id %>. <%= u.name %></li>
+    <% }) %>
+  </ul>
+
+  <a href="/">Back</a>
+</body>
+</html>
