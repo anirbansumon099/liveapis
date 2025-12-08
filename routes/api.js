@@ -29,8 +29,8 @@ router.get("/token", async (req, res) => {
         if (result.success) {
             res.json({
                 token: result.data
-            })
-           , // res.send(result.data);
+            });
+            // res.send(result.data);
         } else {
             console.error("❌ Error:", result.error);
             
