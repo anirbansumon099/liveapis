@@ -8,7 +8,7 @@ const { URL } = require('url');
 const CLIENT_CONFIG = {
     USERNAME: 'admin',
     PASSWORD: 'admin123',
-    BASE_URL: 'https://ayna.linkchur.top/apis',
+    BASE_URL: 'https://ayna.linkchur.top/apis?id=',
     USER_AGENT: 'Rangdhanu Live 1.0'
 };
 
