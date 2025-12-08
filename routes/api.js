@@ -21,7 +21,7 @@ router.get("/users", (req, res) => {
 });
 
 
-app.get("/token", async (req, res) => {
+router.get("/token", async (req, res) => {
     try {
         const postData = {  };
         const result = await makeAuthPostRequest(postData);
