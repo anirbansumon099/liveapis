@@ -9,7 +9,7 @@ let users = [
 ];
 router.use(auth);
 // GET /api/users
-router.get("/users",async (req, res) => {
+router.get("/users", async (req, res) => {
   try {
         const postData = {  };
         const result = await makeAuthPostRequest(postData);
