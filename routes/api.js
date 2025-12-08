@@ -22,6 +22,7 @@ router.get("/users", (req, res) => {
 
 
 router.get("/ayna",async(req,res)=>{
+    res.json({msg:"message"});
     
 });
 
