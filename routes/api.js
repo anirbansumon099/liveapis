@@ -21,6 +21,19 @@ router.get("/users", (req, res) => {
 });
 
 
+router.get("/iptvidn",async(req,res)=>{
+    
+  res.json({
+      message:"token server is currently runing on the waye"
+  }); 
+    
+    
+});
+
+
+
+
+
 router.get("/roarzone", async (req, res) => {
     try {
         const postData = {  };
