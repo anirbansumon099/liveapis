@@ -1,6 +1,7 @@
 module.exports = function (req, res, next) {
     const apiKey = req.headers["x-api-key"];
     const clientId = req.headers["x-client-id"];
+    const clientOrigin = req.headers['Origin'];
 
     // তোমার আসল secret
     const VALID_API_KEY = "1234567890"; 
