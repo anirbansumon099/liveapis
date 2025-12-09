@@ -19,7 +19,7 @@ app.use("/api", require("./routes/api"));
 
 app.get("test",async(req,res)=>{
     
-    res.send("hellow wolrd")
+    res.send("hellow wolrd");
     
     
 });
