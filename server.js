@@ -19,6 +19,10 @@ app.use("/api", require("./routes/api"));
 
 app.get("test",async(req,res)=>{
     
+    const req = new HttpRequest({
+    timeout: 15000,
+    headers: { "User-Agent": "Mozila 5.0" }
+});
     
     
     
