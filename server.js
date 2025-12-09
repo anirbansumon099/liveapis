@@ -15,4 +15,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/", require("./routes/web"));
 app.use("/api", require("./routes/api"));
 
+app.get("test",async(req,res)=>{
+    
+    
+    
+    
+})
+
+
+
 module.exports = app;
