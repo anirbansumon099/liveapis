@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 
+const HttpRequest = require("./HttpConnectionRequest");
+
 const app = express();
 
 app.use(express.json());
